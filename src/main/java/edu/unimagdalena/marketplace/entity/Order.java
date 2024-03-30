@@ -24,8 +24,8 @@ public class Order {
     @Enumerated(EnumType.STRING)
     private OrderStatus status;
     @ManyToOne
-    @JoinColumn(name = "client_id", nullable = false)
-    private Client client;
+    @JoinColumn(name = "customer_id", nullable = false)
+    private Customer customer;
     @OneToOne(mappedBy = "order")
     private Payment payment;
     @OneToOne(mappedBy = "order")
