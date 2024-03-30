@@ -1,6 +1,6 @@
 package edu.unimagdalena.marketplace.controller;
 
-import edu.unimagdalena.marketplace.dto.CreateProductDto;
+import edu.unimagdalena.marketplace.dto.ProductBasicDataDto;
 import edu.unimagdalena.marketplace.dto.ProductDto;
 import edu.unimagdalena.marketplace.services.interfaces.ProductService;
 import org.springframework.http.ResponseEntity;
@@ -38,7 +38,7 @@ public class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity<ProductDto> createProduct(@RequestBody CreateProductDto createProductDto) {
+    public ResponseEntity<ProductDto> createProduct(@RequestBody ProductBasicDataDto createProductDto) {
         ProductDto productDto = productService.createProduct(createProductDto);
         UriComponents uriComponents = UriComponentsBuilder
                 .fromPath("/products/{id}")
@@ -50,7 +50,7 @@ public class ProductController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateProduct(@PathVariable Long id, @RequestBody CreateProductDto createProductDto) {
+    public ResponseEntity<?> updateProduct(@PathVariable Long id, @RequestBody ProductBasicDataDto createProductDto) {
         productService.updateProduct(id, createProductDto);
         return ResponseEntity.noContent().build();
     }

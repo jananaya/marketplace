@@ -9,9 +9,6 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProductDto {
+public class ProductDto extends ProductBasicDataDto {
     private Long id;
-    private String name;
-    private Float price;
-    private Integer stock;
 }

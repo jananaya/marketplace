@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class CreateProductDto {
+public class ProductBasicDataDto {
     private String name;
     private Float price;
     private Integer stock;

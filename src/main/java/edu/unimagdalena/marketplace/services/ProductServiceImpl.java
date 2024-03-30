@@ -1,7 +1,7 @@
 package edu.unimagdalena.marketplace.services;
 
 import edu.unimagdalena.marketplace.constant.ValidationMessage;
-import edu.unimagdalena.marketplace.dto.CreateProductDto;
+import edu.unimagdalena.marketplace.dto.ProductBasicDataDto;
 import edu.unimagdalena.marketplace.dto.ProductDto;
 import edu.unimagdalena.marketplace.entity.Product;
 import edu.unimagdalena.marketplace.exception.BadRequestException;
@@ -42,12 +42,11 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<ProductDto> getProductsInStock() {
         List<Product> products = productRepository.findInStock();
-
         return getProductDtoList(products);
     }
 
     @Override
-    public ProductDto createProduct(CreateProductDto createProductDto) {
+    public ProductDto createProduct(ProductBasicDataDto createProductDto) {
         Product product = Product
                 .builder()
                 .name(createProductDto.getName())
@@ -61,7 +60,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public void updateProduct(Long id, CreateProductDto productDto) {
+    public void updateProduct(Long id, ProductBasicDataDto productDto) {
         Product productToUpdate = tryGetProduct(id);
 
         productToUpdate.setName(productDto.getName());
@@ -71,11 +70,10 @@ public class ProductServiceImpl implements ProductService {
         productRepository.saveAndFlush(productToUpdate);
     }
 
-
     @Override
     public void deleteProduct(Long id) {
         Product product = tryGetProduct(id);
-        boolean productHasOrders = product.getItems().stream().count() > 0;
+        boolean productHasOrders = !product.getItems().isEmpty();
 
         if (productHasOrders) {
             throw new BadRequestException(ValidationMessage.ProductWithOrders);
