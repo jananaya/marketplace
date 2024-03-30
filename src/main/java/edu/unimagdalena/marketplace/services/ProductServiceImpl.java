@@ -26,21 +26,21 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ProductDto getById(Long id) {
+    public ProductDto getProductById(Long id) {
         ProductDto productDto = productMapper.productToProductDto(tryGetProduct(id));
 
         return productDto;
     }
 
     @Override
-    public List<ProductDto> getBySearchTerm(String searchTerm) {
+    public List<ProductDto> getProductsBySearchTerm(String searchTerm) {
         List<Product> products = productRepository.findByNameLike(searchTerm);
 
         return getProductDtoList(products);
     }
 
     @Override
-    public List<ProductDto> getInStock() {
+    public List<ProductDto> getProductsInStock() {
         List<Product> products = productRepository.findInStock();
 
         return getProductDtoList(products);

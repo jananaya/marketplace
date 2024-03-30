@@ -21,19 +21,19 @@ public class ProductController {
 
     @GetMapping("/{id}")
     public ResponseEntity<ProductDto> getProductById(@PathVariable Long id) {
-        ProductDto productDto = productService.getById(id);
+        ProductDto productDto = productService.getProductById(id);
         return ResponseEntity.ok(productDto);
     }
 
     @GetMapping("/search")
     public ResponseEntity<List<ProductDto>> getProductsBySearchTerm(@RequestParam String searchTerm) {
-        List<ProductDto> productDtoList = productService.getBySearchTerm(searchTerm);
+        List<ProductDto> productDtoList = productService.getProductsBySearchTerm(searchTerm);
         return ResponseEntity.ok(productDtoList);
     }
 
     @GetMapping("/instock")
     public ResponseEntity<List<ProductDto>> getProductsInStock() {
-        List<ProductDto> productDtoList = productService.getInStock();
+        List<ProductDto> productDtoList = productService.getProductsInStock();
         return ResponseEntity.ok(productDtoList);
     }
 
