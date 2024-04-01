@@ -9,6 +9,7 @@ import edu.unimagdalena.marketplace.exception.NotFoundException;
 import edu.unimagdalena.marketplace.mapper.CustomerMapper;
 import edu.unimagdalena.marketplace.repository.CustomerRepository;
 import edu.unimagdalena.marketplace.services.interfaces.CustomerService;
+import edu.unimagdalena.marketplace.services.interfaces.RetrieveCustomerService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,15 +20,18 @@ import java.util.stream.Collectors;
 public class CustomerServiceImpl implements CustomerService {
     private final CustomerRepository customerRepository;
     private final CustomerMapper customerMapper;
+    private final RetrieveCustomerService retrieveCustomerService;
 
-    public CustomerServiceImpl(CustomerRepository customerRepository, CustomerMapper customerMapper) {
+    public CustomerServiceImpl(CustomerRepository customerRepository, CustomerMapper customerMapper,
+                               RetrieveCustomerService retrieveCustomerService) {
         this.customerRepository = customerRepository;
         this.customerMapper = customerMapper;
+        this.retrieveCustomerService = retrieveCustomerService;
     }
 
     @Override
     public CustomerDto getCustomerById(Long id) {
-        Customer customer = tryGetCustomer(id);
+        Customer customer = retrieveCustomerService.tryGetCustomer(id);
         return customerMapper.customerToCustomerDto(customer);
     }
 
@@ -80,7 +84,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public void updateCustomer(Long id, CustomerBasicDataDto customerDto) {
-        Customer customer = tryGetCustomer(id);
+        Customer customer = retrieveCustomerService.tryGetCustomer(id);
 
         customer.setAddress(customerDto.getAddress());
         customer.setName(customerDto.getName());
@@ -91,22 +95,13 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public void deleteCustomer(Long id) {
-        Customer customer = tryGetCustomer(id);
+        Customer customer = retrieveCustomerService.tryGetCustomer(id);
 
         if (!customer.getOrders().isEmpty()) {
             throw new BadRequestException(ValidationMessage.CustomerWithOrders);
         }
 
         customerRepository.delete(customer);
-    }
-
-    private Customer tryGetCustomer(Long id) {
-        Optional<Customer> optionalCustomer = customerRepository.findById(id);
-
-        if (optionalCustomer.isEmpty()) {
-            throw new NotFoundException(ValidationMessage.CustomerNotFound);
-        }
-        return optionalCustomer.get();
     }
 
     private List<CustomerDto> getCustomerDtoList(List<Customer> customers) {
