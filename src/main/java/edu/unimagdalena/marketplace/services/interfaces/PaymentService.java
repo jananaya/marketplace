@@ -11,7 +11,7 @@ public interface PaymentService{
 
     PaymentDto findPaymentById(Long id ) throws NotFoundException;
 
-    List<PaymentDto> findAllPagos();
+    List<PaymentDto> findAllPayments();
 
     PaymentDto updatePayment(Long id, PaymentToSaveDto payment);
 
@@ -19,5 +19,5 @@ public interface PaymentService{
 
     List<PaymentDto> findPaymentByDateBetween(LocalDateTime startDate , LocalDateTime endTime);
 
-    List<PaymentDto> findByOrderIdAndMethod(Long idOrder, PaymentMethod paymentMethod);
+    List<PaymentDto> findPaymentByOrderId(Long idOrder, PaymentMethod paymentMethod);
 }

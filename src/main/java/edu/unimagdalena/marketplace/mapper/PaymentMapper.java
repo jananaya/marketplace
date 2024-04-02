@@ -6,7 +6,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.InheritInverseConfiguration;;
 import org.mapstruct.factory.Mappers;
 import org.mapstruct.MappingConstants;
-Mapper(componentModel=MappingConstants.ComponentModel.SPRING)
+@Mapper(componentModel=MappingConstants.ComponentModel.SPRING)
 public interface PaymentMapper{
     PaymentMapper INSTANCE = Mappers.getMapper(PaymentMapper.class);
     PaymentDto  paymentEntityToPaymentDto(Payment payment);

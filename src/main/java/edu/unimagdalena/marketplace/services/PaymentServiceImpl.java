@@ -7,18 +7,17 @@ import edu.unimagdalena.marketplace.exception.NotFoundException;
 import edu.unimagdalena.marketplace.entity.Payment;
 import edu.unimagdalena.marketplace.repository.PaymentRepository;
 import edu.unimagdalena.marketplace.constant.ValidationMessage;
+import  edu.unimagdalena.marketplace.services.interfaces.PaymentService;
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
-public class PaymentServiceImpl implements PaymentService{
+public class PaymentServiceImpl implements PaymentService {
     private final PaymentMapper paymentMapper;
     private final PaymentRepository paymentRepository;
-    private final ValidationMessage validationMessage;
-    public PaymentServiceImpl(PaymentMapper paymentMapper, PaymentRepository paymentRepository,ValidationMessage validationMessage){
+    public PaymentServiceImpl(PaymentMapper paymentMapper, PaymentRepository paymentRepository){
         this.paymentMapper=paymentMapper;
         this.paymentRepository=paymentRepository;
-        this.validationMessage=validationMessage;
     }
 
     @Override
@@ -35,32 +34,32 @@ public class PaymentServiceImpl implements PaymentService{
     }
     @Override
     public PaymentDto updatePayment (Long id, PaymentToSaveDto paymentToSaveDto){
-        Payment paymentInDb=paymentRepository.findById(id).orElseThrow(()-> new NotFoundException(validationMessage.PaymentNoFound));
-        paymentInDb.setTotalPayment(paymentToSaveDto.totalPayment());
-        paymentInDb.setDatePayment(paymentToSaveDto.datePayment());
-        paymentInDb.setMethodPayment(paymentToSaveDto.methodPayment());
+        Payment paymentInDb=paymentRepository.findById(id).orElseThrow(()-> new NotFoundException(ValidationMessage.PaymentNoFound));
+        paymentInDb.setTotalPayment(paymentToSaveDto.totalPayment);
+        paymentInDb.setDatePayment(paymentToSaveDto.datePayment);
+        paymentInDb.setMethodPayment(paymentToSaveDto.methodPayment);
         Payment paymentUpdated= paymentRepository.save(paymentInDb);
         return paymentMapper.paymentEntityToPaymentDto(paymentUpdated);
     }
     @Override
-    public void deletePago(Long id){
-        Payment payment = paymentRepository.findById(id).orElseThrow(()-> new NotFoundException(validationMessage.PaymentNoFound));
+    public void deletePayment(Long id){
+        Payment payment = paymentRepository.findById(id).orElseThrow(()-> new NotFoundException(ValidationMessage.PaymentNoFound));
         paymentRepository.delete(payment);
     }
     @Override
     public List<PaymentDto> findPaymentByDateBetween(LocalDateTime startDate , LocalDateTime endTime){
         List<Payment> payments=paymentRepository.findByDateBetween(startDate,endTime);
         if(payments.isEmpty()){
-            throw new NotFoundException(validationMessage.PaymentNoFound);
+            throw new NotFoundException(ValidationMessage.PaymentNoFound);
         }
-        return payments.stream().map(payment-> paymentMapper.paymentEntityToPaymentDto(payment)).toList();
+        return payments.stream().map(paymentMapper::paymentEntityToPaymentDto).toList();
     }
     @Override
     public List<PaymentDto> findPaymentByOrderId(Long idOrder, PaymentMethod paymentMethod){
         List<Payment> payments=paymentRepository.findByOrderIdAndMethod(idOrder,paymentMethod);
         if(payments.isEmpty()){
-            throw new NotFoundException(validationMessage.PaymentNoFound);
+            throw new NotFoundException(ValidationMessage.PaymentNoFound);
         }
-        return payments.stream().map(payment->paymentMapper.paymentEntityToPaymentDto(payment)).toList();
+        return payments.stream().map(paymentMapper::paymentEntityToPaymentDto).toList();
     }
 }
