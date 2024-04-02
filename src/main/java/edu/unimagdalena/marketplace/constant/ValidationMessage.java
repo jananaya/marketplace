@@ -11,4 +11,5 @@ public class ValidationMessage {
     public static final String OrderStatusIsNotValid = "El estado del pedido no es válido";
     public static final String StartDateIsBlank = "Debe proporcionar la fecha de inicio";
     public static final String EndDateIsBlank = "Debe proporcionar la fecha final";
+    public static final String PaymentNoFound="Lo sentimos, no se encontraron pagos";
 }
