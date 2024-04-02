@@ -1,0 +1,21 @@
+package edu.unimagdalena.marketplace.dto;
+import java.time.LocalDateTime;
+import edu.unimagdalena.marketplace.enumutil.PaymentMethod;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import java.util.List;
+
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+public class PaymentToSaveDto{
+    private Long id;
+    private Double totalPayment;
+    private LocalDateTime datePayment;
+    private PaymentMethod methodPayment;
+}
